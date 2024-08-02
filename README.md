@@ -1,2 +1,2 @@
-# youthcorn-2024
-성훈의 Youthcorn-2024 Hands-on Session
+# youthcon-2024
+성훈의 Youthcon-2024 Hands-on Session
