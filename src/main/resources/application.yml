@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: youthcon-2024
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: classpath*:db/data.sql
+      mode: always
+      platform: h2
+  output:
+    ansi:
+      enabled: always
+
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: debug
+        transaction:
+          interceptor: trace
+  pattern:
+    console: "%clr(%d{${LOG_DATEFORMAT_PATTERN:HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([%7.7t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n"
