@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: youthcon-2024
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
+
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: debug
+        transaction:
+          interceptor: trace

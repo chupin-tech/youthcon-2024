@@ -9,5 +9,4 @@ public class Youthcon2024Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Youthcon2024Application.class, args);
 	}
-
 }
