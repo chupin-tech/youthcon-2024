@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.chupintech.youthcon2024.document.domain.Document;
 import com.chupintech.youthcon2024.document.domain.DocumentRepository;
 import com.chupintech.youthcon2024.document.domain.ReceiveCommand;
+import com.chupintech.youthcon2024.event.EventPublisher;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DocumentService {
 
+	private final EventPublisher eventPublisher;
 	private final DocumentRepository repository;
 
 	@Transactional
@@ -23,6 +25,8 @@ public class DocumentService {
 
 		final Document document = Document.newOf(command);
 		repository.save(document);
+
+		eventPublisher.publish(document.createReceiveEvent());
 
 		log.info("========== DocumentService.receive End ==========");
 	}
@@ -35,6 +39,7 @@ public class DocumentService {
 			.orElseThrow(() -> new IllegalArgumentException(String.format("There is no document(%d).", documentId)));
 
 		document.read();
+		eventPublisher.publish(document.createReadEvent());
 
 		log.info("========== DocumentService.read End ==========");
 	}
