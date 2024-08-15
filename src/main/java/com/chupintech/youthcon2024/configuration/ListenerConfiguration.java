@@ -5,6 +5,7 @@ import com.chupintech.youthcon2024.document.domain.ReceiveEvent;
 import com.chupintech.youthcon2024.event.AsyncEventListener;
 import com.chupintech.youthcon2024.event.EventListener;
 import com.chupintech.youthcon2024.event.EventPublisher;
+import com.chupintech.youthcon2024.event.TransactionalEventListener;
 import com.chupintech.youthcon2024.homesummary.listener.HomeSummaryNotificationEventListener;
 import com.chupintech.youthcon2024.homesummary.listener.HomeSummaryReadEventListener;
 import com.chupintech.youthcon2024.homesummary.listener.HomeSummaryReceiveEventListener;
@@ -27,19 +28,21 @@ public class ListenerConfiguration {
                                                                         final Executor executor) {
 
         final NotificationReceiveEventListener listener = new NotificationReceiveEventListener(publisher, service);
-        return new AsyncEventListener<>(listener, executor);
+        return new TransactionalEventListener<>(new AsyncEventListener<>(listener, executor));
     }
 
     @Bean
     public EventListener<ReceiveEvent> homeSummaryReceiveEventListener(@Lazy final EventPublisher publisher,
                                                                        final HomeSummaryUpdateService service) {
-        return new HomeSummaryReceiveEventListener(publisher, service);
+        final HomeSummaryReceiveEventListener listener = new HomeSummaryReceiveEventListener(publisher, service);
+        return new TransactionalEventListener<>(listener);
     }
 
     @Bean
     public EventListener<ReadEvent> homeSummaryReadEventListener(@Lazy final EventPublisher publisher,
                                                                  final HomeSummaryUpdateService service) {
-        return new HomeSummaryReadEventListener(publisher, service);
+        final HomeSummaryReadEventListener listener = new HomeSummaryReadEventListener(publisher, service);
+        return new TransactionalEventListener<>(listener);
     }
 
     @Bean
