@@ -1,20 +1,25 @@
 package com.chupintech.youthcon2024.homesummary.listener;
 
 import com.chupintech.youthcon2024.document.domain.ReceiveEvent;
-import com.chupintech.youthcon2024.event.EventListener;
+import com.chupintech.youthcon2024.event.AbstractEventListener;
+import com.chupintech.youthcon2024.event.EventPublisher;
 import com.chupintech.youthcon2024.homesummary.service.HomeSummaryUpdateService;
 
-public class HomeSummaryReceiveEventListener implements EventListener<ReceiveEvent> {
+import java.util.Optional;
+
+public class HomeSummaryReceiveEventListener extends AbstractEventListener<ReceiveEvent> {
 
     private final HomeSummaryUpdateService service;
 
-    public HomeSummaryReceiveEventListener(final HomeSummaryUpdateService service) {
+    public HomeSummaryReceiveEventListener(final EventPublisher publisher, final HomeSummaryUpdateService service) {
+        super(publisher);
         this.service = service;
     }
 
     @Override
-    public void onEvent(final ReceiveEvent event) {
+    protected Optional<Object> handleEvent(final ReceiveEvent event) {
         service.addDocumentSummary(event.userId(), event.documentId(), event.title());
+        return Optional.empty();
     }
 
     @Override
