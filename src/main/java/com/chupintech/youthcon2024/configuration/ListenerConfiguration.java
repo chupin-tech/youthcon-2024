@@ -2,6 +2,7 @@ package com.chupintech.youthcon2024.configuration;
 
 import com.chupintech.youthcon2024.document.domain.ReadEvent;
 import com.chupintech.youthcon2024.document.domain.ReceiveEvent;
+import com.chupintech.youthcon2024.event.AsyncEventListener;
 import com.chupintech.youthcon2024.event.EventListener;
 import com.chupintech.youthcon2024.event.EventPublisher;
 import com.chupintech.youthcon2024.homesummary.listener.HomeSummaryNotificationEventListener;
@@ -15,13 +16,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
+import java.util.concurrent.Executor;
+
 @Configuration
 public class ListenerConfiguration {
 
     @Bean
     public EventListener<ReceiveEvent> notificationReceiveEventListener(@Lazy final EventPublisher publisher,
-                                                                        final NotificationService service) {
-        return new NotificationReceiveEventListener(publisher, service);
+                                                                        final NotificationService service,
+                                                                        final Executor executor) {
+
+        final NotificationReceiveEventListener listener = new NotificationReceiveEventListener(publisher, service);
+        return new AsyncEventListener<>(listener, executor);
     }
 
     @Bean
