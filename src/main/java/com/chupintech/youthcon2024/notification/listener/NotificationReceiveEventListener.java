@@ -16,4 +16,9 @@ public class NotificationReceiveEventListener implements EventListener<ReceiveEv
     public void onEvent(final ReceiveEvent event) {
         service.notify(event.userId(), event.documentId());
     }
+
+    @Override
+    public boolean canListen(final Class<?> clazz) {
+        return clazz.isAssignableFrom(ReceiveEvent.class);
+    }
 }

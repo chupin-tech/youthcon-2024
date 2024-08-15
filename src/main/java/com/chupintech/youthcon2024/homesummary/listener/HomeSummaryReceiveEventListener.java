@@ -16,4 +16,9 @@ public class HomeSummaryReceiveEventListener implements EventListener<ReceiveEve
     public void onEvent(final ReceiveEvent event) {
         service.addDocumentSummary(event.userId(), event.documentId(), event.title());
     }
+
+    @Override
+    public boolean canListen(final Class<?> clazz) {
+        return clazz.isAssignableFrom(ReceiveEvent.class);
+    }
 }
