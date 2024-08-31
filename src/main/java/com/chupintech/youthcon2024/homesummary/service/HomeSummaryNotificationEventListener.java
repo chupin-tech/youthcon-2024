@@ -15,4 +15,9 @@ public class HomeSummaryNotificationEventListener implements EventListener<Notif
     public void onEvent(final NotificationEvent event) {
         service.addNotificationCount(event.count());
     }
+
+    @Override
+    public boolean canListen(final Class<?> clazz) {
+        return NotificationEvent.class.isAssignableFrom(clazz);
+    }
 }

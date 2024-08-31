@@ -15,4 +15,9 @@ public class HomeSummaryReadEventListener implements EventListener<ReadEvent> {
     public void onEvent(final ReadEvent event) {
         service.readDocumentSummary(event.userId(), event.documentId());
     }
+
+    @Override
+    public boolean canListen(final Class<?> clazz) {
+        return ReadEvent.class.isAssignableFrom(clazz);
+    }
 }
